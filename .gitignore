@@ -1,0 +1,46 @@
+# Environment & Credentials (CRITICAL: Do NOT remove)
+.env
+*.env
+backend/.env
+!backend/.env.example
+*.pem
+*.key
+
+# Python & Backend
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+output_audio.mp3
+backend/__pycache__/
+backend/lambdas/*/__pycache__/
+backend/data/*.json
+
+# Android & Gradle
+.gradle/
+**/build/
+android/.gradle/
+android/build/
+android/app/build/
+*.apk
+*.aab
+local.properties
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+
+# Test screenshots & scratch captures
+emulator_*.png
+screen.png
+*.log
