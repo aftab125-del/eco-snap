@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  EcoSnap Bharat - Serverless AI Waste-to-Energy and Vernacular Recycling Backend
+  WeMakeDevs Bharat Builds Tour - Environmental Hacks (Track 03)
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: python3.12
+    Environment:
+      Variables:
+        BEDROCK_MODEL_ID: anthropic.claude-3-5-sonnet-20241022-v2:0
+        AWS_DEFAULT_REGION: us-east-1
+        POLLY_VOICE_ID: Aditi
+
+Resources:
+  EcoSnapApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+        AllowOrigin: "'*'"
+
+  AnalyzeWasteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/analyze_waste/
+      Handler: app.lambda_handler
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource: "*"
+      Events:
+        AnalyzeWasteApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EcoSnapApi
+            Path: /api/v1/waste/analyze
+            Method: post
+
+  GenerateSolutionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/generate_solutions/
+      Handler: app.lambda_handler
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+                - polly:SynthesizeSpeech
+              Resource: "*"
+      Events:
+        GenerateSolutionsApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EcoSnapApi
+            Path: /api/v1/waste/solutions
+            Method: post
+
+  ScrapRatesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/scrap_rates/
+      Handler: app.lambda_handler
+      Events:
+        ScrapRatesApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EcoSnapApi
+            Path: /api/v1/scrap-rates
+            Method: get
+
+Outputs:
+  ApiUrl:
+    Description: "Production API Gateway URL for EcoSnap Android Client"
+    Value: !Sub "https://${EcoSnapApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
