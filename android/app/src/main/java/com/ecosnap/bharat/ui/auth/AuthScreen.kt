@@ -8,6 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +56,11 @@ fun AuthScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = DeepCharcoal
+                )
             }
             Text(
                 text = "मेरा खाता (My Account)",
@@ -63,7 +73,19 @@ fun AuthScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         // App Logo & Greeting
-        Text(text = "🌿", fontSize = 48.sp)
+        Box(
+            modifier = Modifier
+                .size(64.dp)
+                .background(color = PaleMint, shape = CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Eco,
+                contentDescription = "App Logo",
+                tint = NeemGreenDark,
+                modifier = Modifier.size(36.dp)
+            )
+        }
         Text(
             text = "EcoSnap Bharat",
             fontSize = 24.sp,
@@ -127,12 +149,23 @@ fun AuthScreen(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "⚠️ $errorMessage",
-                    color = TerracottaRed,
-                    fontSize = 13.sp,
-                    modifier = Modifier.padding(10.dp)
-                )
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = TerracottaRed,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = errorMessage ?: "",
+                        color = TerracottaRed,
+                        fontSize = 13.sp
+                    )
+                }
             }
         }
 
@@ -241,11 +274,22 @@ fun AuthScreen(
 
         // Guest Mode Option
         TextButton(onClick = onBack) {
-            Text(
-                text = "बिना लॉगिन के जारी रखें (Continue as Guest) ›",
-                color = SlateGray,
-                fontSize = 13.sp
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = "बिना लॉगिन के जारी रखें (Continue as Guest)",
+                    color = SlateGray,
+                    fontSize = 13.sp
+                )
+                Icon(
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = null,
+                    tint = SlateGray,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +23,7 @@ import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.AppMode
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
+import com.ecosnap.bharat.ui.common.WasteCategoryIcon
 
 @Composable
 fun HomeScreen(
@@ -69,7 +72,12 @@ fun HomeScreen(
                         modifier = Modifier.size(36.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
-                            Text(text = "🌿", fontSize = 18.sp)
+                            Icon(
+                                imageVector = Icons.Filled.Eco,
+                                contentDescription = "EcoSnap",
+                                tint = NeemGreenDark,
+                                modifier = Modifier.size(20.dp)
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -106,8 +114,14 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.Translate,
+                                contentDescription = "Language",
+                                tint = if (isEn) Color.White else NeemGreenDark,
+                                modifier = Modifier.size(13.dp)
+                            )
                             Text(
-                                text = if (isEn) "🌐 EN" else "🌐 हि",
+                                text = if (isEn) "EN" else "हि",
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (isEn) Color.White else NeemGreenDark
@@ -126,8 +140,14 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = "Account",
+                                tint = if (currentUser != null) NeemGreenDark else DeepCharcoal,
+                                modifier = Modifier.size(15.dp)
+                            )
                             Text(
-                                text = if (currentUser != null) "👤 ${currentUser?.name?.take(6)}" else (if (isEn) "👤 Account" else "👤 खाता"),
+                                text = if (currentUser != null) currentUser?.name?.take(6) ?: "User" else (if (isEn) "Account" else "खाता"),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (currentUser != null) NeemGreenDark else DeepCharcoal,
@@ -163,8 +183,15 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = null,
+                                tint = if (currentMode == AppMode.FAMILY) Color.White else SlateGray,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = if (isEn) "🏡 Family Mode" else "🏡 घर मोड (Family)",
+                                text = if (isEn) "Family Mode" else "घर मोड",
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (currentMode == AppMode.FAMILY) Color.White else SlateGray,
@@ -187,8 +214,15 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.Apartment,
+                                contentDescription = null,
+                                tint = if (currentMode == AppMode.SOCIETY) Color.White else SlateGray,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = if (isEn) "👥 Society Hub" else "👥 समाज मोड (Society)",
+                                text = if (isEn) "Society Hub" else "समाज मोड",
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (currentMode == AppMode.SOCIETY) Color.White else SlateGray,
@@ -206,9 +240,9 @@ fun HomeScreen(
             Column {
                 Text(
                     text = if (currentUser != null)
-                        (if (isEn) "Hello, ${currentUser?.name}! 🙏" else "नमस्ते, ${currentUser?.name}! 🙏")
+                        (if (isEn) "Welcome back, ${currentUser?.name}" else "नमस्ते, ${currentUser?.name}")
                     else
-                        (if (isEn) "Hello! 🙏" else "नमस्ते! 🙏"),
+                        (if (isEn) "Welcome to EcoSnap" else "इको-स्नैप में आपका स्वागत है"),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = DeepCharcoal
@@ -233,15 +267,26 @@ fun HomeScreen(
                 colors = CardDefaults.cardColors(containerColor = PaleMint)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = if (currentMode == AppMode.FAMILY)
-                            (if (isEn) "🌟 Your Savings & Impact Score" else "🌟 आपका पर्यावरण और बचत स्कोर")
-                        else
-                            (if (isEn) "🏆 Community Society Impact" else "🏆 सोसाइटी कम्युनिटी रिकॉर्ड"),
-                        fontWeight = FontWeight.Bold,
-                        color = NeemGreenDark,
-                        fontSize = 15.sp
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (currentMode == AppMode.FAMILY) Icons.Default.TrendingUp else Icons.Default.Leaderboard,
+                            contentDescription = null,
+                            tint = NeemGreenDark,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = if (currentMode == AppMode.FAMILY)
+                                (if (isEn) "Savings & Impact Score" else "पर्यावरण और बचत स्कोर")
+                            else
+                                (if (isEn) "Community Impact Score" else "सोसाइटी कम्युनिटी रिकॉर्ड"),
+                            fontWeight = FontWeight.Bold,
+                            color = NeemGreenDark,
+                            fontSize = 15.sp
+                        )
+                    }
                     Spacer(modifier = Modifier.height(12.dp))
 
                     if (currentMode == AppMode.FAMILY) {
@@ -326,7 +371,12 @@ fun HomeScreen(
                         modifier = Modifier.size(44.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
-                            Text(text = "📸", fontSize = 22.sp)
+                            Icon(
+                                imageVector = Icons.Default.CameraAlt,
+                                contentDescription = "Camera",
+                                tint = Color.White,
+                                modifier = Modifier.size(22.dp)
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.width(14.dp))
@@ -349,7 +399,12 @@ fun HomeScreen(
                         )
                     }
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text(text = "›", fontSize = 22.sp, color = Color.White.copy(alpha = 0.8f))
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = "Go",
+                        tint = Color.White.copy(alpha = 0.8f),
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             }
         }
@@ -371,25 +426,41 @@ fun HomeScreen(
                 ) {
                     Column(
                         modifier = Modifier.padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "🤖", fontSize = 24.sp)
+                            Icon(
+                                imageVector = Icons.Default.Psychology,
+                                contentDescription = "EcoSaathi AI",
+                                tint = SuryaAmber,
+                                modifier = Modifier.size(26.dp)
+                            )
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
                                 color = SuryaAmber
                             ) {
-                                Text(
-                                    text = if (isEn) "Voice 🎙️" else "आवाज 🎙️",
-                                    fontSize = 10.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White,
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.GraphicEq,
+                                        contentDescription = null,
+                                        tint = Color.White,
+                                        modifier = Modifier.size(11.dp)
+                                    )
+                                    Text(
+                                        text = if (isEn) "Voice" else "आवाज",
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                }
                             }
                         }
                         Text(
@@ -420,25 +491,41 @@ fun HomeScreen(
                 ) {
                     Column(
                         modifier = Modifier.padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "📜", fontSize = 24.sp)
+                            Icon(
+                                imageVector = Icons.Default.History,
+                                contentDescription = "History",
+                                tint = NeemGreen,
+                                modifier = Modifier.size(26.dp)
+                            )
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
                                 color = NeemGreen
                             ) {
-                                Text(
-                                    text = if (isEn) "Synced" else "रिकॉर्ड",
-                                    fontSize = 10.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White,
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.CloudDone,
+                                        contentDescription = null,
+                                        tint = Color.White,
+                                        modifier = Modifier.size(11.dp)
+                                    )
+                                    Text(
+                                        text = if (isEn) "Synced" else "रिकॉर्ड",
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                }
                             }
                         }
                         Text(
@@ -476,14 +563,25 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = if (isEn) "💰 Today's Scrap Rates (Live Index)" else "💰 आज का कबाड़ भाव (Live Scrap Index)",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
-                            color = DeepCharcoal,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CurrencyRupee,
+                                contentDescription = null,
+                                tint = RupeeGold,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Text(
+                                text = if (isEn) "Today's Scrap Market Rates" else "आज का कबाड़ मंडी भाव",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = DeepCharcoal,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = if (isEn) "Newspaper ₹15/kg • Iron ₹30/kg • PET Bottle ₹12/kg" else "अखबार ₹15/kg • लोहा ₹30/kg • बोतल ₹12/kg",
@@ -514,12 +612,23 @@ fun HomeScreen(
 
         // 8. Sample Quick Pick Items
         item {
-            Text(
-                text = if (isEn) "⚡ Quick Preset Demos:" else "⚡ सीधे जांचें (Quick Preset Demos):",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = DeepCharcoal
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Category,
+                    contentDescription = null,
+                    tint = DeepCharcoal,
+                    modifier = Modifier.size(17.dp)
+                )
+                Text(
+                    text = if (isEn) "Quick Waste Samples:" else "सीधे जांचें (Waste Samples):",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = DeepCharcoal
+                )
+            }
         }
 
         items(repository.sampleItems) { item ->
@@ -537,7 +646,7 @@ fun HomeScreen(
                         .padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = item.iconEmoji, fontSize = 32.sp)
+                    WasteCategoryIcon(category = item.materialCategory, containerSize = 42.dp, iconSize = 22.dp)
                     Spacer(modifier = Modifier.width(14.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
@@ -579,11 +688,23 @@ fun HomeScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = SuryaAmber)
                 ) {
-                    Text(
-                        text = if (isEn) "👥 View Society Compost Pits & Bulk Pickups" else "👥 सोसाइटी खाद पिट व पिकअप स्थिति देखें",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Apartment,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (isEn) "View Society Compost Pits & Bulk Pickups" else "सोसाइटी खाद पिट व पिकअप स्थिति देखें",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }

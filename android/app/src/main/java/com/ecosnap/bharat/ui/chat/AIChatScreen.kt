@@ -18,6 +18,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.VolumeUp
 import com.ecosnap.bharat.data.ChatMessage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
@@ -83,18 +90,33 @@ fun AIChatScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = onBack) {
-                        Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = DeepCharcoal
+                        )
                     }
                     Spacer(modifier = Modifier.width(4.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "🤖 EcoSaathi AI",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            color = DeepCharcoal,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Psychology,
+                                contentDescription = null,
+                                tint = NeemGreenDark,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Text(
+                                text = "EcoSaathi AI",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = DeepCharcoal,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                         Text(
                             text = "Smart Companion",
                             fontSize = 11.sp,
@@ -163,9 +185,16 @@ fun AIChatScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🎙️", fontSize = 20.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Mic,
+                            contentDescription = null,
+                            tint = SuryaAmber,
+                            modifier = Modifier.size(20.dp)
+                        )
                         Text(
                             text = "सुन रहे हैं... बोलिए (Listening in $currentLang)",
                             fontWeight = FontWeight.Bold,
@@ -240,7 +269,12 @@ fun AIChatScreen(
                         .size(44.dp)
                         .background(if (isListeningVoice) SuryaAmber else PaleMint, CircleShape)
                 ) {
-                    Text(text = "🎙️", fontSize = 20.sp)
+                    Icon(
+                        imageVector = Icons.Default.Mic,
+                        contentDescription = "Voice Input",
+                        tint = if (isListeningVoice) Color.White else NeemGreenDark,
+                        modifier = Modifier.size(22.dp)
+                    )
                 }
 
                 // Text Field
@@ -267,7 +301,12 @@ fun AIChatScreen(
                     modifier = Modifier.size(44.dp),
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text(text = "➤", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Icon(
+                        imageVector = Icons.Default.Send,
+                        contentDescription = "Send",
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
                 }
             }
         }
@@ -295,7 +334,12 @@ fun ChatBubble(
                     .padding(end = 4.dp)
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(text = "🤖", fontSize = 16.sp)
+                    Icon(
+                        imageVector = Icons.Default.Psychology,
+                        contentDescription = "AI",
+                        tint = NeemGreenDark,
+                        modifier = Modifier.size(18.dp)
+                    )
                 }
             }
         }
@@ -334,7 +378,18 @@ fun ChatBubble(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            Text(text = if (isSpeaking) "⏸️ रोकें" else "🔊 आवाज सुनें", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = NeemGreenDark)
+                            Icon(
+                                imageVector = if (isSpeaking) Icons.Default.Pause else Icons.Default.VolumeUp,
+                                contentDescription = null,
+                                tint = NeemGreenDark,
+                                modifier = Modifier.size(12.dp)
+                            )
+                            Text(
+                                text = if (isSpeaking) "रोकें" else "आवाज सुनें",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = NeemGreenDark
+                            )
                         }
                     }
                 }

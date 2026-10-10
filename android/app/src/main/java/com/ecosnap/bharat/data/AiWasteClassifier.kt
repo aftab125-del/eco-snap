@@ -76,7 +76,7 @@ object AiWasteClassifier {
             itemNameEnglish = "1-Litre Plastic Water Bottle",
             materialCategory = "PET Plastic (Code 1)",
             cleanlinessCondition = "साफ व सूखा (Clean & Dry)",
-            iconEmoji = "🧴",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion(
                     "q1",
@@ -134,7 +134,7 @@ object AiWasteClassifier {
             itemNameEnglish = "Fresh Citrus Fruit Peels",
             materialCategory = "जैविक गीला कचरा (Organic Wet Waste)",
             cleanlinessCondition = "ताजा छिलके (Fresh)",
-            iconEmoji = "🍊",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion("q1", "क्या आप घर में फर्श के लिए जैविक क्लीनर बनाना चाहते हैं?", "Do you want to make an organic floor cleaner?", listOf(DiagnosticOption("opt1", "हाँ, क्लीनर बनाना है", "Yes"), DiagnosticOption("opt2", "नहीं, सिर्फ खाद चाहिए", "Only compost"))),
                 DiagnosticQuestion("q2", "क्या आपके पास गुड़ (Jaggery) और पानी उपलब्ध है?", "Do you have jaggery and water?", listOf(DiagnosticOption("opt3", "हाँ, गुड़ उपलब्ध है", "Yes"), DiagnosticOption("opt4", "नहीं है", "No")))
@@ -183,7 +183,7 @@ object AiWasteClassifier {
             itemNameEnglish = "Cardboard Shipping Box",
             materialCategory = "सेलूलोज़ गत्ता (Cardboard)",
             cleanlinessCondition = "सूखा (Dry)",
-            iconEmoji = "📦",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion("q1", "क्या आपको घर में सामान रखने के लिए बॉक्स चाहिए?", "Do you need storage organizers?", listOf(DiagnosticOption("opt1", "हाँ, स्टोरेज चाहिए", "Yes"), DiagnosticOption("opt2", "नहीं, सीधे बेचना है", "No"))),
                 DiagnosticQuestion("q2", "क्या आपके पास गमले या बागीचा है?", "Do you have garden pots?", listOf(DiagnosticOption("opt3", "हाँ, बागीचा है", "Yes"), DiagnosticOption("opt4", "नहीं है", "No")))
@@ -211,7 +211,7 @@ object AiWasteClassifier {
                 preparationTipHindi = "बॉक्स को चपटा दबाकर रस्सी से बांध लें ताकि वजन पूरा मिले।",
                 speechScriptHindi = "उपाय तीन: कबाड़ से कमाई। इसका कबाड़ी भाव नौ से ग्यारह रुपये प्रति किलो है।"
             ),
-            summarySpeechHindi = "नमस्ते! अमेज़न गत्ते से घर का ऑर्गेनाइजर बनाएं, या चपटा करके कबाड़ी को नौ से ग्यारह रुपये प्रति किलो बेचें।",
+            summarySpeechHindi = "नमस्ते! पार्सल गत्ते से घर का ऑर्गेनाइजर बनाएं, या चपटा करके कबाड़ी को नौ से ग्यारह रुपये प्रति किलो बेचें।",
             impact = ImpactMetrics(180, 0.22)
         )
 
@@ -232,7 +232,7 @@ object AiWasteClassifier {
             itemNameEnglish = "Scrap Metal & Iron Item",
             materialCategory = "धातु कबाड़ (Ferrous Metal)",
             cleanlinessCondition = "ठोस धातु (Solid Metal)",
-            iconEmoji = "🔩",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion("q1", "क्या इस धातु पर जंग लगी है?", "Is this item heavily rusted?", listOf(DiagnosticOption("opt1", "हाँ, जंग है", "Yes"), DiagnosticOption("opt2", "नहीं, साफ है", "No"))),
                 DiagnosticQuestion("q2", "क्या आप इसे सीधे कबाड़ी को बेचना चाहते हैं?", "Do you want to sell it to scrap dealer?", listOf(DiagnosticOption("opt3", "हाँ, बेचना है", "Yes"), DiagnosticOption("opt4", "घर में रखना है", "Keep it")))

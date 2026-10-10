@@ -55,7 +55,7 @@ class DataRepository {
             ChatMessage(
                 id = "welcome",
                 sender = "AI",
-                text = "Hello! 🙏 I am your EcoSaathi AI companion. Ask me anything about household waste, DIY upcycling, composting, or live scrap market rates.",
+                text = "Hello! I am your EcoSaathi AI companion. Ask me anything about household waste, DIY upcycling, composting, or live scrap market rates.",
                 language = "en"
             )
         )
@@ -255,7 +255,7 @@ class DataRepository {
             itemNameEnglish = "1-Litre Plastic Water Bottle",
             materialCategory = "PET Plastic (Code 1)",
             cleanlinessCondition = "साफ (Clean)",
-            iconEmoji = "🧴",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion("q1", "क्या आपके घर में पौधे या गमले हैं?", "Do you have potted plants or a garden?", listOf(DiagnosticOption("opt1", "हाँ, पौधे हैं", "Yes"), DiagnosticOption("opt2", "नहीं, पौधे नहीं हैं", "No"))),
                 DiagnosticQuestion("q2", "क्या आपके पास कैंची या चाकू है?", "Do you have scissors or a cutter?", listOf(DiagnosticOption("opt3", "हाँ, कैंची है", "Yes"), DiagnosticOption("opt4", "कुछ नहीं है", "No tools")))
@@ -267,7 +267,7 @@ class DataRepository {
             itemNameEnglish = "Fresh Citrus Fruit Peels",
             materialCategory = "जैविक गीला कचरा (Organic Wet Waste)",
             cleanlinessCondition = "ताजा (Fresh)",
-            iconEmoji = "🍊",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion("q1", "क्या आप घर में फर्श के लिए जैविक क्लीनर बनाना चाहते हैं?", "Do you want to make an organic floor cleaner?", listOf(DiagnosticOption("opt1", "हाँ, क्लीनर बनाना है", "Yes"), DiagnosticOption("opt2", "नहीं, सिर्फ खाद चाहिए", "Only compost"))),
                 DiagnosticQuestion("q2", "क्या आपके पास गुड़ (Jaggery) और पानी की बोतल उपलब्ध है?", "Do you have jaggery and a plastic bottle?", listOf(DiagnosticOption("opt3", "हाँ, गुड़ उपलब्ध है", "Yes"), DiagnosticOption("opt4", "नहीं है", "No")))
@@ -275,11 +275,11 @@ class DataRepository {
         ),
         WasteAnalysisResult(
             id = "preset_cardboard",
-            itemNameHindi = "अमेज़न डिलीवरी गत्ता बॉक्स",
-            itemNameEnglish = "Amazon Cardboard Delivery Box",
+            itemNameHindi = "डिलीवरी गत्ता बॉक्स",
+            itemNameEnglish = "Cardboard Delivery Box",
             materialCategory = "सेलूलोज़ गत्ता (Cardboard)",
             cleanlinessCondition = "सूखा (Dry)",
-            iconEmoji = "📦",
+            iconEmoji = "",
             diagnosticQuestions = listOf(
                 DiagnosticQuestion("q1", "क्या आपको घर में सामान रखने के लिए बॉक्स चाहिए?", "Do you need storage organizers?", listOf(DiagnosticOption("opt1", "हाँ, स्टोरेज चाहिए", "Yes"), DiagnosticOption("opt2", "नहीं, सीधे बेचना है", "No"))),
                 DiagnosticQuestion("q2", "क्या आपके पास गमले या बागीचा है?", "Do you have garden pots?", listOf(DiagnosticOption("opt3", "हाँ, बागीचा है", "Yes"), DiagnosticOption("opt4", "नहीं है", "No")))

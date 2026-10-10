@@ -14,6 +14,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Recycling
+import androidx.compose.material.icons.filled.Scale
+import androidx.compose.material.icons.filled.VolumeUp
 import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
@@ -57,7 +69,11 @@ fun SolutionsScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = DeepCharcoal
+                )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -73,11 +89,17 @@ fun SolutionsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
+                        Icon(
+                            imageVector = if (isAudioPlaying) Icons.Default.Pause else Icons.Default.VolumeUp,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
+                        )
                         Text(
                             text = if (currentLanguage == AppLanguage.ENGLISH) {
-                                if (isAudioPlaying) "⏸️ Pause" else "🔊 Listen"
+                                if (isAudioPlaying) "Pause" else "Listen"
                             } else {
-                                if (isAudioPlaying) "⏸️ रोकें" else "🔊 सुनें"
+                                if (isAudioPlaying) "रोकें" else "सुनें"
                             },
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
@@ -100,12 +122,23 @@ fun SolutionsScreen(
                 colors = CardDefaults.cardColors(containerColor = SuryaAmberLight)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "🗣️ AI Voice Companion (Amazon Polly):" else "🗣️ AI वॉइस साथी (Amazon Polly Hindi):",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
-                        color = SuryaAmber
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.GraphicEq,
+                            contentDescription = null,
+                            tint = SuryaAmber,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = if (currentLanguage == AppLanguage.ENGLISH) "AI Voice Guidance:" else "AI वॉइस मार्गदर्शन:",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = SuryaAmber
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = solutions.getSummarySpeech(currentLanguage),
@@ -117,7 +150,7 @@ fun SolutionsScreen(
             }
         }
 
-        // 🏡 CARD 1: Ghar Ka Jugaad
+        // Method 1: Ghar Ka Jugaad
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -131,13 +164,24 @@ fun SolutionsScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(shape = RoundedCornerShape(6.dp), color = PaleMint) {
-                        Text(
-                            text = if (currentLanguage == AppLanguage.ENGLISH) "🏡 Method 1: DIY Home Upcycle" else "🏡 उपाय 1: घर का जुगाड़ (DIY Upcycle)",
-                            color = NeemGreenDark,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                        )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Build,
+                                contentDescription = null,
+                                tint = NeemGreenDark,
+                                modifier = Modifier.size(13.dp)
+                            )
+                            Text(
+                                text = if (currentLanguage == AppLanguage.ENGLISH) "Method 1: DIY Home Upcycle" else "उपाय 1: घर का जुगाड़ (DIY Upcycle)",
+                                color = NeemGreenDark,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                     Text(
                         text = if (currentLanguage == AppLanguage.ENGLISH) "Time: ${solutions.jugaad.timeMinutes} mins • Cost: ₹${solutions.jugaad.costInr}" else "समय: ${solutions.jugaad.timeMinutes} मिनट • खर्च: ₹${solutions.jugaad.costInr}",
@@ -162,7 +206,7 @@ fun SolutionsScreen(
             }
         }
 
-        // ⚡ CARD 2: Urja Aur Khad (Home Energy & Resource)
+        // Method 2: Urja Aur Khad (Home Energy & Resource)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -171,13 +215,24 @@ fun SolutionsScreen(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Surface(shape = RoundedCornerShape(6.dp), color = SuryaAmberLight) {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "⚡ Method 2: Energy & Resource" else "⚡ उपाय 2: ऊर्जा और संसाधन (Energy & Resource)",
-                        color = SuryaAmber,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Bolt,
+                            contentDescription = null,
+                            tint = SuryaAmber,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Text(
+                            text = if (currentLanguage == AppLanguage.ENGLISH) "Method 2: Energy & Resource" else "उपाय 2: ऊर्जा और संसाधन (Energy & Resource)",
+                            color = SuryaAmber,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
@@ -202,7 +257,7 @@ fun SolutionsScreen(
             }
         }
 
-        // 💰 CARD 3: Kabaad Se Kamai (Scrap Value & Disposal)
+        // Method 3: Kabaad Se Kamai (Scrap Value & Disposal)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -211,13 +266,24 @@ fun SolutionsScreen(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Surface(shape = RoundedCornerShape(6.dp), color = RupeeGoldLight) {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "💰 Method 3: Scrap Value & Disposal" else "💰 उपाय 3: कबाड़ से कमाई (Scrap Value)",
-                        color = DeepCharcoal,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Recycling,
+                            contentDescription = null,
+                            tint = DeepCharcoal,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Text(
+                            text = if (currentLanguage == AppLanguage.ENGLISH) "Method 3: Scrap Value & Disposal" else "उपाय 3: कबाड़ से कमाई (Scrap Value)",
+                            color = DeepCharcoal,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -260,18 +326,40 @@ fun SolutionsScreen(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "🌱 CO2 Prevented: ${solutions.impact.co2PreventedKg} kg" else "🌱 रोकी गई CO2: ${solutions.impact.co2PreventedKg} kg",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    color = NeemGreenDark
-                )
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "⚖️ Weight: ${solutions.impact.weightGrams}g" else "⚖️ वजन: ${solutions.impact.weightGrams}g",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    color = NeemGreenDark
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Eco,
+                        contentDescription = null,
+                        tint = NeemGreenDark,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "CO2 Prevented: ${solutions.impact.co2PreventedKg} kg" else "रोकी गई CO2: ${solutions.impact.co2PreventedKg} kg",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                        color = NeemGreenDark
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Scale,
+                        contentDescription = null,
+                        tint = NeemGreenDark,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Weight: ${solutions.impact.weightGrams}g" else "वजन: ${solutions.impact.weightGrams}g",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                        color = NeemGreenDark
+                    )
+                }
             }
         }
 
@@ -291,16 +379,27 @@ fun SolutionsScreen(
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(containerColor = if (hasLogged) SlateGray else NeemGreen)
         ) {
-            Text(
-                text = if (currentLanguage == AppLanguage.ENGLISH) {
-                    if (hasLogged) "✓ Impact Logged!" else "✅ Adopted Solution (Log Impact)"
-                } else {
-                    if (hasLogged) "✓ प्रभाव दर्ज किया गया (Logged!)" else "✅ मैंने यह उपाय अपना लिया (Log Impact)"
-                },
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = if (hasLogged) Icons.Default.CheckCircle else Icons.Default.Done,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
+                )
+                Text(
+                    text = if (currentLanguage == AppLanguage.ENGLISH) {
+                        if (hasLogged) "Impact Logged!" else "Adopted Solution (Log Impact)"
+                    } else {
+                        if (hasLogged) "प्रभाव दर्ज किया गया" else "मैंने यह उपाय अपना लिया (Log Impact)"
+                    },
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

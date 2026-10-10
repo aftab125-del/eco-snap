@@ -14,11 +14,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CurrencyRupee
+import androidx.compose.material.icons.filled.Lightbulb
 import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
 import com.ecosnap.bharat.ui.common.LanguageSelectionDialog
 import com.ecosnap.bharat.ui.common.LanguageSelectorButton
+import com.ecosnap.bharat.ui.common.WasteCategoryIcon
 
 @Composable
 fun ScrapRatesScreen(
@@ -52,18 +57,33 @@ fun ScrapRatesScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBack) {
-                    Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = DeepCharcoal
+                    )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "💰 Today's Scrap Rates" else "💰 कबाड़ मंडी भाव",
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = DeepCharcoal,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CurrencyRupee,
+                            contentDescription = null,
+                            tint = RupeeGold,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = if (currentLanguage == AppLanguage.ENGLISH) "Today's Scrap Rates" else "कबाड़ मंडी भाव",
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = DeepCharcoal,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                     Text(
                         text = if (currentLanguage == AppLanguage.ENGLISH) "Delhi-NCR Avg (₹/kg)" else "राष्ट्रीय औसत दरें (₹/kg)",
                         fontSize = 11.sp,
@@ -86,17 +106,28 @@ fun ScrapRatesScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(containerColor = RupeeGoldLight)
             ) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) {
-                        "💡 Tip: Separate iron and copper before weighing. Clean and dry scrap commands higher market rates."
-                    } else {
-                        "💡 सलाह: लोहा और तांबा कबाड़ी को तौलने से पहले हमेशा अलग करें। सूखा और साफ कबाड़ ज्यादा भाव दिलाता है।"
-                    },
-                    fontSize = 13.sp,
-                    color = DeepCharcoal,
+                Row(
                     modifier = Modifier.padding(12.dp),
-                    lineHeight = 18.sp
-                )
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lightbulb,
+                        contentDescription = null,
+                        tint = DeepCharcoal,
+                        modifier = Modifier.size(16.dp).padding(top = 2.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) {
+                            "Tip: Separate iron and copper before weighing. Clean and dry scrap commands higher market rates."
+                        } else {
+                            "सलाह: लोहा और तांबा कबाड़ी को तौलने से पहले हमेशा अलग करें। सूखा और साफ कबाड़ ज्यादा भाव दिलाता है।"
+                        },
+                        fontSize = 13.sp,
+                        color = DeepCharcoal,
+                        lineHeight = 18.sp
+                    )
+                }
             }
         }
 
@@ -113,9 +144,25 @@ fun ScrapRatesScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column {
-                            Text(text = rate.getName(currentLanguage), fontWeight = FontWeight.Bold, fontSize = 15.sp, color = DeepCharcoal)
-                            Text(text = "${rate.nameEnglish} • ${rate.category}", fontSize = 11.sp, color = SlateGray)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            WasteCategoryIcon(category = rate.category, size = 36.dp)
+                            Column {
+                                Text(
+                                    text = rate.getName(currentLanguage),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = DeepCharcoal
+                                )
+                                Text(
+                                    text = "${rate.nameEnglish} • ${rate.category}",
+                                    fontSize = 11.sp,
+                                    color = SlateGray
+                                )
+                            }
                         }
                         Text(
                             text = "₹${rate.minPriceInr} - ₹${rate.maxPriceInr}",
