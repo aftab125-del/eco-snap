@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecosnap.bharat.data.AppLanguage
@@ -47,27 +48,30 @@ fun SocietyScreen(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
-                }
-                Column {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "👥 Society & Panchayat Hub" else "👥 समाज व ग्राम पंचायत हब",
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = DeepCharcoal
-                    )
-                    Text(
-                        text = societyStats.getName(currentLanguage),
-                        fontSize = 12.sp,
-                        color = SlateGray
-                    )
-                }
+            IconButton(onClick = onBack) {
+                Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
             }
+            Spacer(modifier = Modifier.width(4.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = if (currentLanguage == AppLanguage.ENGLISH) "👥 Society Hub" else "👥 समाज व पंचायत हब",
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = DeepCharcoal,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = societyStats.getName(currentLanguage),
+                    fontSize = 11.sp,
+                    color = SlateGray,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
             LanguageSelectorButton(
                 currentLanguage = currentLanguage,
                 onClick = { showLanguageDialog = true }

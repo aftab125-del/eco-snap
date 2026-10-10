@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecosnap.bharat.data.ChatMessage
@@ -79,31 +80,34 @@ fun AIChatScreen(
             Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = onBack) {
-                            Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
-                        }
-                        Column {
-                            Text(
-                                text = "🤖 इको-साथी AI (EcoSaathi)",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                color = DeepCharcoal
-                            )
-                            Text(
-                                text = "आवाज और स्मार्ट चैट साथी (AI Companion)",
-                                fontSize = 11.sp,
-                                color = NeemGreen
-                            )
-                        }
+                    IconButton(onClick = onBack) {
+                        Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
                     }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "🤖 EcoSaathi AI",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = DeepCharcoal,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = "Smart Companion",
+                            fontSize = 11.sp,
+                            color = NeemGreen,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
 
                     // Language Chips in Header
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        listOf("hi" to "हिन्दी", "hinglish" to "Hinglish", "en" to "EN").forEach { (code, label) ->
+                        listOf("hi" to "हि", "hinglish" to "Hin", "en" to "EN").forEach { (code, label) ->
                             val isSelected = currentLang == code
                             Surface(
                                 shape = RoundedCornerShape(12.dp),
