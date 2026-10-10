@@ -28,7 +28,7 @@ fun DiagnosticScreen(
     onViewSolutions: (String) -> Unit
 ) {
     val currentLanguage by repository.appLanguage.collectAsState()
-    val item = repository.sampleItems.find { it.id == itemId } ?: repository.sampleItems.first()
+    val item = repository.getItem(itemId)
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     if (showLanguageDialog) {

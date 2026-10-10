@@ -1,7 +1,6 @@
 package com.ecosnap.bharat.ui.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.AppMode
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
@@ -35,7 +35,8 @@ fun HomeScreen(
     val userStats by repository.userStats.collectAsState()
     val societyStats by repository.societyStats.collectAsState()
     val currentUser by repository.currentUser.collectAsState()
-    val currentLang by repository.currentLanguage.collectAsState()
+    val appLanguage by repository.appLanguage.collectAsState()
+    val isEn = appLanguage == AppLanguage.ENGLISH
 
     LazyColumn(
         modifier = Modifier
@@ -65,44 +66,39 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Text(
-                            text = if (currentMode == AppMode.FAMILY) "🏡 घर मोड (Family)" else "👥 समाज मोड (Society)",
+                            text = if (currentMode == AppMode.FAMILY)
+                                (if (isEn) "🏡 Family Mode" else "🏡 घर मोड (Family)")
+                            else
+                                (if (isEn) "👥 Society Mode" else "👥 समाज मोड (Society)"),
                             fontWeight = FontWeight.Bold,
                             color = if (currentMode == AppMode.FAMILY) NeemGreenDark else DeepCharcoal,
                             fontSize = 14.sp
                         )
-                        Text(text = "⇄ बदलें", fontSize = 12.sp, color = SlateGray)
+                        Text(
+                            text = if (isEn) "⇄ Switch" else "⇄ बदलें",
+                            fontSize = 12.sp,
+                            color = SlateGray
+                        )
                     }
                 }
 
-                // User Profile & Language Selector
+                // 1-Tap Language Toggle & User Profile Pill
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Language Switcher Pill
-                    val langLabel = when (currentLang) {
-                        "hinglish" -> "🌐 Hinglish"
-                        "en" -> "🌐 English"
-                        else -> "🌐 हिन्दी"
-                    }
+                    // 1-Tap Language Switcher
                     Surface(
                         shape = RoundedCornerShape(20.dp),
-                        color = Color(0xFFF1F3F4),
-                        modifier = Modifier.clickable {
-                            val nextLang = when (currentLang) {
-                                "hi" -> "hinglish"
-                                "hinglish" -> "en"
-                                else -> "hi"
-                            }
-                            repository.setLanguage(nextLang)
-                        }
+                        color = if (isEn) NeemGreen else Color(0xFFF1F3F4),
+                        modifier = Modifier.clickable { repository.toggleLanguage() }
                     ) {
                         Text(
-                            text = langLabel,
+                            text = if (isEn) "🌐 EN ⇄ हिन्दी" else "🌐 हिन्दी ⇄ EN",
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                            color = DeepCharcoal
+                            color = if (isEn) Color.White else DeepCharcoal
                         )
                     }
 
@@ -118,7 +114,7 @@ fun HomeScreen(
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Text(
-                                text = if (currentUser != null) "👤 ${currentUser?.name}" else "👤 खाता",
+                                text = if (currentUser != null) "👤 ${currentUser?.name}" else (if (isEn) "👤 Account" else "👤 खाता"),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (currentUser != null) NeemGreenDark else DeepCharcoal
@@ -133,14 +129,17 @@ fun HomeScreen(
         item {
             Column {
                 Text(
-                    text = if (currentUser != null) "नमस्ते, ${currentUser?.name}! 🙏" else "नमस्ते! 🙏",
+                    text = if (currentUser != null)
+                        (if (isEn) "Hello, ${currentUser?.name}! 🙏" else "नमस्ते, ${currentUser?.name}! 🙏")
+                    else
+                        (if (isEn) "Hello! 🙏" else "नमस्ते! 🙏"),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = DeepCharcoal
                 )
                 Text(
                     text = if (currentMode == AppMode.FAMILY)
-                        "कचरे को फेंकें नहीं, काम में लाएं या बेचें।"
+                        (if (isEn) "Don't throw waste—upcycle into DIY Jugaad or sell at fair rates." else "कचरे को फेंकें नहीं, काम में लाएं या बेचें।")
                     else
                         societyStats.name,
                     fontSize = 14.sp,
@@ -158,7 +157,10 @@ fun HomeScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = if (currentMode == AppMode.FAMILY) "🌟 आपका पर्यावरण और बचत स्कोर" else "🏆 सोसाइटी कम्युनिटी रिकॉर्ड",
+                        text = if (currentMode == AppMode.FAMILY)
+                            (if (isEn) "🌟 Your Savings & Impact Score" else "🌟 आपका पर्यावरण और बचत स्कोर")
+                        else
+                            (if (isEn) "🏆 Community Society Impact" else "🏆 सोसाइटी कम्युनिटी रिकॉर्ड"),
                         fontWeight = FontWeight.Bold,
                         color = NeemGreenDark,
                         fontSize = 16.sp
@@ -170,25 +172,49 @@ fun HomeScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            StatBox(title = "बचाए गए पैसे", value = "₹${userStats.totalSavedInr}", highlightColor = RupeeGold)
-                            StatBox(title = "डायवर्ट कचरा", value = "${userStats.totalWasteDivertedKg} kg", highlightColor = NeemGreen)
-                            StatBox(title = "खाद / एंजाइम", value = "${userStats.totalCompostOrEnzymeLiters} L", highlightColor = SuryaAmber)
+                            StatBox(
+                                title = if (isEn) "Money Saved" else "बचाए गए पैसे",
+                                value = "₹${userStats.totalSavedInr}",
+                                highlightColor = RupeeGold
+                            )
+                            StatBox(
+                                title = if (isEn) "Waste Diverted" else "डायवर्ट कचरा",
+                                value = "${userStats.totalWasteDivertedKg} kg",
+                                highlightColor = NeemGreen
+                            )
+                            StatBox(
+                                title = if (isEn) "Bio-Enzyme/Compost" else "खाद / एंजाइम",
+                                value = "${userStats.totalCompostOrEnzymeLiters} L",
+                                highlightColor = SuryaAmber
+                            )
                         }
                     } else {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            StatBox(title = "कुल खाद", value = "${societyStats.totalCompostKg} kg", highlightColor = NeemGreen)
-                            StatBox(title = "डायवर्ट कचरा", value = "${societyStats.wasteDivertedPercentage}%", highlightColor = SuryaAmber)
-                            StatBox(title = "कबाड़ आय", value = "₹${societyStats.communityScrapRevenueInr}", highlightColor = RupeeGold)
+                            StatBox(
+                                title = if (isEn) "Total Compost" else "कुल खाद",
+                                value = "${societyStats.totalCompostKg} kg",
+                                highlightColor = NeemGreen
+                            )
+                            StatBox(
+                                title = if (isEn) "Waste Diverted" else "डायवर्ट कचरा",
+                                value = "${societyStats.wasteDivertedPercentage}%",
+                                highlightColor = SuryaAmber
+                            )
+                            StatBox(
+                                title = if (isEn) "Scrap Income" else "कबाड़ आय",
+                                value = "₹${societyStats.communityScrapRevenueInr}",
+                                highlightColor = RupeeGold
+                            )
                         }
                     }
                 }
             }
         }
 
-        // HERO Action Button (Scan Waste)
+        // HERO Action Button (Scan Waste with Real Camera)
         item {
             Button(
                 onClick = onNavigateToScan,
@@ -206,13 +232,13 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = "कचरे का फोटो खींचें (Scan Waste)",
+                            text = if (isEn) "Scan Waste with Camera" else "कचरे का फोटो खींचें (Scan Waste)",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
                         Text(
-                            text = "AI तुरंत बताएगा: जुगाड़, ऊर्जा या कबाड़ी भाव",
+                            text = if (isEn) "AI detects: DIY Jugaad, Clean Energy & Scrap Value" else "AI तुरंत बताएगा: जुगाड़, ऊर्जा या कबाड़ी भाव",
                             fontSize = 11.sp,
                             color = Color(0xFFD4EED8)
                         )
@@ -251,7 +277,7 @@ fun HomeScreen(
                                 color = SuryaAmber
                             ) {
                                 Text(
-                                    text = "आवाज 🎙️",
+                                    text = if (isEn) "Voice 🎙️" else "आवाज 🎙️",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
@@ -260,13 +286,13 @@ fun HomeScreen(
                             }
                         }
                         Text(
-                            text = "इको-साथी AI",
+                            text = if (isEn) "EcoSaathi AI" else "इको-साथी AI",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = DeepCharcoal
                         )
                         Text(
-                            text = "बोलकर पूछें या चैट करें",
+                            text = if (isEn) "Voice & chat companion" else "बोलकर पूछें या चैट करें",
                             fontSize = 11.sp,
                             color = SlateGray
                         )
@@ -297,7 +323,7 @@ fun HomeScreen(
                                 color = NeemGreen
                             ) {
                                 Text(
-                                    text = "रिकॉर्ड",
+                                    text = if (isEn) "Synced" else "रिकॉर्ड",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
@@ -306,13 +332,13 @@ fun HomeScreen(
                             }
                         }
                         Text(
-                            text = "मेरा इतिहास",
+                            text = if (isEn) "My History" else "मेरा इतिहास",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = DeepCharcoal
                         )
                         Text(
-                            text = "स्कैन व बातचीत सूची",
+                            text = if (isEn) "Scans & chat logs" else "स्कैन व बातचीत सूची",
                             fontSize = 11.sp,
                             color = SlateGray
                         )
@@ -339,18 +365,23 @@ fun HomeScreen(
                 ) {
                     Column {
                         Text(
-                            text = "💰 आज का कबाड़ भाव (Live Scrap Index)",
+                            text = if (isEn) "💰 Today's Scrap Rates (Live Index)" else "💰 आज का कबाड़ भाव (Live Scrap Index)",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = DeepCharcoal
                         )
                         Text(
-                            text = "अखबार ₹15/kg • लोहा ₹30/kg • बोतल ₹12/kg",
+                            text = if (isEn) "Newspaper ₹15/kg • Iron ₹30/kg • PET Bottle ₹12/kg" else "अखबार ₹15/kg • लोहा ₹30/kg • बोतल ₹12/kg",
                             fontSize = 12.sp,
                             color = SlateGray
                         )
                     }
-                    Text(text = "सभी देखें ›", fontWeight = FontWeight.Bold, color = NeemGreen, fontSize = 13.sp)
+                    Text(
+                        text = if (isEn) "View all ›" else "सभी देखें ›",
+                        fontWeight = FontWeight.Bold,
+                        color = NeemGreen,
+                        fontSize = 13.sp
+                    )
                 }
             }
         }
@@ -358,7 +389,7 @@ fun HomeScreen(
         // Sample Quick Pick Items
         item {
             Text(
-                text = "⚡ सीधे जांचें (Quick Preset Demos):",
+                text = if (isEn) "⚡ Quick Preset Demos:" else "⚡ सीधे जांचें (Quick Preset Demos):",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = DeepCharcoal
@@ -383,10 +414,24 @@ fun HomeScreen(
                     Text(text = item.iconEmoji, fontSize = 32.sp)
                     Spacer(modifier = Modifier.width(14.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(text = item.itemNameHindi, fontWeight = FontWeight.Bold, fontSize = 15.sp, color = DeepCharcoal)
-                        Text(text = item.materialCategory, fontSize = 12.sp, color = SlateGray)
+                        Text(
+                            text = if (isEn) item.itemNameEnglish else item.itemNameHindi,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = DeepCharcoal
+                        )
+                        Text(
+                            text = item.materialCategory,
+                            fontSize = 12.sp,
+                            color = SlateGray
+                        )
                     }
-                    Text(text = "समाधान देखें ›", fontSize = 13.sp, color = NeemGreen, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = if (isEn) "View solutions ›" else "समाधान देखें ›",
+                        fontSize = 13.sp,
+                        color = NeemGreen,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
         }
@@ -400,7 +445,11 @@ fun HomeScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = SuryaAmber)
                 ) {
-                    Text(text = "👥 सोसाइटी खाद पिट व पिकअप स्थिति देखें", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = if (isEn) "👥 View Society Compost Pits & Bulk Pickups" else "👥 सोसाइटी खाद पिट व पिकअप स्थिति देखें",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }

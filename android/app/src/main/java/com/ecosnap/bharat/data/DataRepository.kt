@@ -14,14 +14,17 @@ class DataRepository {
     private val _appMode = MutableStateFlow(AppMode.FAMILY)
     val appMode: StateFlow<AppMode> = _appMode.asStateFlow()
 
-    private val _currentLanguage = MutableStateFlow("hi") // "hi", "hinglish", "en"
+    private val _currentLanguage = MutableStateFlow("en") // "en", "hi", "hinglish"
     val currentLanguage: StateFlow<String> = _currentLanguage.asStateFlow()
 
-    private val _appLanguage = MutableStateFlow(AppLanguage.HINDI)
+    private val _appLanguage = MutableStateFlow(AppLanguage.ENGLISH)
     val appLanguage: StateFlow<AppLanguage> = _appLanguage.asStateFlow()
 
     private val _currentUser = MutableStateFlow<UserProfile?>(null)
     val currentUser: StateFlow<UserProfile?> = _currentUser.asStateFlow()
+
+    private val _customItems = MutableStateFlow<Map<String, WasteAnalysisResult>>(emptyMap())
+    private val _customSolutions = mutableMapOf<String, SolutionBundle>()
 
     private val _userStats = MutableStateFlow(
         UserImpactStats(
@@ -35,13 +38,13 @@ class DataRepository {
 
     private val _societyStats = MutableStateFlow(
         SocietyStats(
-            name = "गोकुल धाम सोसाइटी, ब्लॉक-B (Delhi-NCR)",
+            name = "Gokuldham Society, Block-B (Delhi-NCR)",
             totalCompostKg = 340,
             wasteDivertedPercentage = 85,
             communityScrapRevenueInr = 4250,
-            pit1Status = "तैयार खाद (निकालने योग्य)",
-            pit2Status = "गीला कचरा भर रहा है (70% भरा)",
-            nextBulkPickupDate = "रविवार, सुबह 10:00 बजे"
+            pit1Status = "Compost Ready (Ready to harvest)",
+            pit2Status = "Wet waste filling (70% full)",
+            nextBulkPickupDate = "Sunday, 10:00 AM"
         )
     )
     val societyStats: StateFlow<SocietyStats> = _societyStats.asStateFlow()
@@ -52,8 +55,8 @@ class DataRepository {
             ChatMessage(
                 id = "welcome",
                 sender = "AI",
-                text = "नमस्ते! 🙏 मैं आपका इको-साथी AI हूँ। आप मुझसे किसी भी कचरे, घर के जुगाड़, कम्पोस्ट या आज के कबाड़ी भाव के बारे में पूछ सकते हैं।",
-                language = "hi"
+                text = "Hello! 🙏 I am your EcoSaathi AI companion. Ask me anything about household waste, DIY upcycling, composting, or live scrap market rates.",
+                language = "en"
             )
         )
     )
@@ -79,6 +82,23 @@ class DataRepository {
     fun setAppLanguage(lang: AppLanguage) {
         _appLanguage.value = lang
         _currentLanguage.value = lang.code
+    }
+
+    fun toggleLanguage() {
+        if (_appLanguage.value == AppLanguage.ENGLISH) {
+            setAppLanguage(AppLanguage.HINDI)
+        } else {
+            setAppLanguage(AppLanguage.ENGLISH)
+        }
+    }
+
+    fun registerDetectedItem(item: WasteAnalysisResult, bundle: SolutionBundle) {
+        _customItems.value = _customItems.value + (item.id to item)
+        _customSolutions[item.id] = bundle
+    }
+
+    fun getItem(itemId: String): WasteAnalysisResult {
+        return _customItems.value[itemId] ?: sampleItems.find { it.id == itemId } ?: sampleItems.first()
     }
 
     fun toggleAppMode() {
@@ -268,6 +288,7 @@ class DataRepository {
     )
 
     fun getSolutionsForItem(itemId: String): SolutionBundle {
+        _customSolutions[itemId]?.let { return it }
         return when (itemId) {
             "preset_citrus" -> SolutionBundle(
                 jugaad = JugaadSolution("कमरे की प्राकृतिक खुशबू (Room Freshener)", "Natural Citrus Air Freshener", 2, 0, listOf("छिलकों को 1 गिलास पानी में 5 मिनट उबालें।", "पानी ठंडा करके स्प्रे बोतल में भरें।", "कमरे में ताजगी आएगी और मच्छर दूर रहेंगे।"), "उपाय एक: घर का जुगाड़। छिलकों को पानी में उबालकर रूम फ्रेशनर बनाएं।"),
