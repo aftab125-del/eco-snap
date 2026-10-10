@@ -75,9 +75,9 @@ fun SolutionsScreen(
                     ) {
                         Text(
                             text = if (currentLanguage == AppLanguage.ENGLISH) {
-                                if (isAudioPlaying) "⏸️ Pause" else "🔊 Listen Audio"
+                                if (isAudioPlaying) "⏸️ Pause" else "🔊 Listen"
                             } else {
-                                if (isAudioPlaying) "⏸️ रोकें" else "🔊 पूरा उपाय सुनें"
+                                if (isAudioPlaying) "⏸️ रोकें" else "🔊 सुनें"
                             },
                             color = Color.White,
                             fontWeight = FontWeight.Bold,

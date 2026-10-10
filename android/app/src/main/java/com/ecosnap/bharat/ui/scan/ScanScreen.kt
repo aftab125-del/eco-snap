@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -154,28 +155,30 @@ fun ScanScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Text(text = "←", color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+                Text(text = "←", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
             }
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = if (currentLanguage == AppLanguage.ENGLISH) "📸 AI Waste Scanner" else "📸 AI कचरा स्कैनर",
                 color = Color.White,
                 fontSize = 17.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
-
-            // 1-Tap Language Toggle Pill
+            Spacer(modifier = Modifier.width(8.dp))
             Surface(
                 shape = RoundedCornerShape(20.dp),
                 color = Color(0xFF222624),
                 modifier = Modifier.clickable { repository.toggleLanguage() }
             ) {
                 Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "🌐 English ⇄ हिन्दी" else "🌐 हिन्दी ⇄ English",
-                    fontSize = 11.sp,
+                    text = if (currentLanguage == AppLanguage.ENGLISH) "🌐 EN" else "🌐 हि",
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -375,7 +378,8 @@ fun ScanScreen(
                             color = Color.White,
                             fontSize = 10.sp,
                             textAlign = TextAlign.Center,
-                            maxLines = 1
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
