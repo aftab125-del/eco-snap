@@ -4,6 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,13 +33,24 @@ fun LanguageSelectorButton(
         color = Color(0xFFF1F3F4),
         modifier = modifier.padding(2.dp)
     ) {
-        Text(
-            text = "${currentLanguage.flagEmoji} ${currentLanguage.displayName}",
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
+        Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-            color = DeepCharcoal
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Translate,
+                contentDescription = "Language",
+                tint = DeepCharcoal,
+                modifier = Modifier.size(13.dp)
+            )
+            Text(
+                text = currentLanguage.displayName,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = DeepCharcoal
+            )
+        }
     }
 }
 
@@ -50,7 +64,7 @@ fun LanguageSelectionDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = if (currentLanguage == AppLanguage.ENGLISH) "Select App Language / भाषा चुनें" else "भाषा चुनें (Select Language)",
+                text = if (currentLanguage == AppLanguage.ENGLISH) "Select Language" else "भाषा चुनें (Select Language)",
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 color = DeepCharcoal
@@ -82,7 +96,18 @@ fun LanguageSelectionDialog(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                Text(text = lang.flagEmoji, fontSize = 20.sp)
+                                Surface(
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = if (isSelected) NeemGreen else Color(0xFFE0E0E0)
+                                ) {
+                                    Text(
+                                        text = lang.code.uppercase(),
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (isSelected) Color.White else DeepCharcoal,
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                    )
+                                }
                                 Text(
                                     text = lang.displayName,
                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
@@ -91,7 +116,12 @@ fun LanguageSelectionDialog(
                                 )
                             }
                             if (isSelected) {
-                                Text(text = "✓", color = NeemGreen, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                Icon(
+                                    imageVector = Icons.Filled.Check,
+                                    contentDescription = "Selected",
+                                    tint = NeemGreen,
+                                    modifier = Modifier.size(18.dp)
+                                )
                             }
                         }
                     }

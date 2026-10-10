@@ -15,11 +15,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Verified
 import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
 import com.ecosnap.bharat.ui.common.LanguageSelectionDialog
 import com.ecosnap.bharat.ui.common.LanguageSelectorButton
+import com.ecosnap.bharat.ui.common.WasteCategoryIcon
 
 @Composable
 fun DiagnosticScreen(
@@ -66,7 +74,11 @@ fun DiagnosticScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = DeepCharcoal
+                )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
@@ -97,20 +109,31 @@ fun DiagnosticScreen(
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.iconEmoji, fontSize = 48.sp)
+                WasteCategoryIcon(category = item.materialCategory, size = 52.dp)
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Surface(
                         shape = RoundedCornerShape(6.dp),
                         color = NeemGreen
                     ) {
-                        Text(
-                            text = if (currentLanguage == AppLanguage.ENGLISH) "✓ AI Verified" else "✓ AI द्वारा सत्यापित",
-                            color = Color.White,
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Verified,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(13.dp)
+                            )
+                            Text(
+                                text = if (currentLanguage == AppLanguage.ENGLISH) "AI Verified" else "AI द्वारा सत्यापित",
+                                color = Color.White,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
@@ -141,28 +164,50 @@ fun DiagnosticScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "🤖 AI Companion Advice:" else "🤖 AI साथी की सलाह:",
-                        fontWeight = FontWeight.Bold,
-                        color = NeemGreenDark,
-                        fontSize = 14.sp
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Psychology,
+                            contentDescription = null,
+                            tint = NeemGreenDark,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = if (currentLanguage == AppLanguage.ENGLISH) "AI Companion Advice:" else "AI साथी की सलाह:",
+                            fontWeight = FontWeight.Bold,
+                            color = NeemGreenDark,
+                            fontSize = 14.sp
+                        )
+                    }
                     Surface(
                         shape = RoundedCornerShape(16.dp),
                         color = if (isSpeaking) SuryaAmber else PaleMint,
                         modifier = Modifier.clickable { isSpeaking = !isSpeaking }
                     ) {
-                        Text(
-                            text = if (currentLanguage == AppLanguage.ENGLISH) {
-                                if (isSpeaking) "🔊 Speaking..." else "▶️ Play Voice"
-                            } else {
-                                if (isSpeaking) "🔊 बोल रहा है..." else "▶️ आवाज सुनें"
-                            },
-                            color = if (isSpeaking) Color.White else NeemGreenDark,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                        ) {
+                            Icon(
+                                imageVector = if (isSpeaking) Icons.Default.GraphicEq else Icons.Default.PlayArrow,
+                                contentDescription = null,
+                                tint = if (isSpeaking) Color.White else NeemGreenDark,
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Text(
+                                text = if (currentLanguage == AppLanguage.ENGLISH) {
+                                    if (isSpeaking) "Speaking..." else "Play Voice"
+                                } else {
+                                    if (isSpeaking) "बोल रहा है..." else "आवाज सुनें"
+                                },
+                                color = if (isSpeaking) Color.White else NeemGreenDark,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -238,7 +283,7 @@ fun DiagnosticScreen(
             colors = ButtonDefaults.buttonColors(containerColor = NeemGreen)
         ) {
             Text(
-                text = if (currentLanguage == AppLanguage.ENGLISH) "✨ View 3 Solutions (समाधान देखें)" else "✨ 3 समाधान देखें (View Solutions)",
+                text = if (currentLanguage == AppLanguage.ENGLISH) "View 3 Solutions (समाधान देखें)" else "3 समाधान देखें (View Solutions)",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White

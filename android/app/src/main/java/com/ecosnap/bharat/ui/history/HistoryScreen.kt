@@ -15,6 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.ecosnap.bharat.data.ChatMessage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.data.ScanHistoryItem
@@ -53,16 +63,31 @@ fun HistoryScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = onBack) {
-                        Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = DeepCharcoal
+                        )
                     }
                     Spacer(modifier = Modifier.width(4.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "📜 इतिहास व रिकॉर्ड (History)",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = DeepCharcoal
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.History,
+                                contentDescription = null,
+                                tint = NeemGreenDark,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                text = "इतिहास व रिकॉर्ड (History)",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                                color = DeepCharcoal
+                            )
+                        }
                         Text(
                             text = if (currentUser != null) "${currentUser?.name} • क्लाउड सिंक रिकॉर्ड" else "अतिथि मोड • स्थानीय रिकॉर्ड",
                             fontSize = 12.sp,
@@ -87,14 +112,25 @@ fun HistoryScreen(
                                 .weight(1f)
                                 .clickable { selectedTab = 0 }
                         ) {
-                            Text(
-                                text = "📸 स्कैन इतिहास (${scanHistory.size})",
-                                color = if (selectedTab == 0) Color.White else DeepCharcoal,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
+                            Row(
                                 modifier = Modifier.padding(vertical = 8.dp),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                            )
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.CameraAlt,
+                                    contentDescription = null,
+                                    tint = if (selectedTab == 0) Color.White else DeepCharcoal,
+                                    modifier = Modifier.size(15.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "स्कैन इतिहास (${scanHistory.size})",
+                                    color = if (selectedTab == 0) Color.White else DeepCharcoal,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
                         }
                         Surface(
                             shape = RoundedCornerShape(10.dp),
@@ -103,14 +139,25 @@ fun HistoryScreen(
                                 .weight(1f)
                                 .clickable { selectedTab = 1 }
                         ) {
-                            Text(
-                                text = "💬 चैट इतिहास (${chatMessages.size})",
-                                color = if (selectedTab == 1) Color.White else DeepCharcoal,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
+                            Row(
                                 modifier = Modifier.padding(vertical = 8.dp),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                            )
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Chat,
+                                    contentDescription = null,
+                                    tint = if (selectedTab == 1) Color.White else DeepCharcoal,
+                                    modifier = Modifier.size(15.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "चैट इतिहास (${chatMessages.size})",
+                                    color = if (selectedTab == 1) Color.White else DeepCharcoal,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
                         }
                     }
                 }
@@ -122,10 +169,11 @@ fun HistoryScreen(
             // Scans List
             if (scanHistory.isEmpty()) {
                 EmptyStateView(
-                    icon = "📸",
+                    icon = Icons.Default.CameraAlt,
                     title = "कोई स्कैन इतिहास नहीं मिला",
                     description = "आपने अभी तक किसी कचरे का स्कैन नहीं किया है। कैमरे से फोटो लें और तुरंत समाधान पाएं।",
-                    buttonText = "📸 कचरा स्कैन करें",
+                    buttonText = "कचरा स्कैन करें",
+                    buttonIcon = Icons.Default.CameraAlt,
                     onAction = onNavigateToScan
                 )
             } else {
@@ -145,10 +193,11 @@ fun HistoryScreen(
             // Chat Messages List
             if (chatMessages.isEmpty()) {
                 EmptyStateView(
-                    icon = "🤖",
+                    icon = Icons.Default.Chat,
                     title = "कोई चैट इतिहास नहीं मिला",
                     description = "इको-साथी AI से कोई भी सवाल पूछें - कचरा रीसाइक्लिंग, घर का जुगाड़ या आज के कबाड़ी भाव।",
-                    buttonText = "💬 इको-साथी से बात करें",
+                    buttonText = "इको-साथी से बात करें",
+                    buttonIcon = Icons.Default.Chat,
                     onAction = onNavigateToChat
                 )
             } else {
@@ -223,9 +272,16 @@ fun ScanHistoryCard(item: ScanHistoryItem) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "💡", fontSize = 14.sp)
-                    Spacer(modifier = Modifier.width(6.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lightbulb,
+                        contentDescription = null,
+                        tint = SuryaAmber,
+                        modifier = Modifier.size(15.dp)
+                    )
                     Text(
                         text = item.jugaadTitle,
                         fontSize = 13.sp,
@@ -248,11 +304,22 @@ fun ScanHistoryCard(item: ScanHistoryItem) {
             HorizontalDivider(color = Color(0xFFF1F3F4))
             Spacer(modifier = Modifier.height(6.dp))
 
-            Text(
-                text = "🕒 $formattedDate",
-                fontSize = 11.sp,
-                color = SlateGray
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Schedule,
+                    contentDescription = null,
+                    tint = SlateGray,
+                    modifier = Modifier.size(12.dp)
+                )
+                Text(
+                    text = formattedDate,
+                    fontSize = 11.sp,
+                    color = SlateGray
+                )
+            }
         }
     }
 }
@@ -285,9 +352,11 @@ fun ChatHistoryCard(message: ChatMessage, onNavigateToChat: () -> Unit) {
                 modifier = Modifier.size(28.dp)
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(
-                        text = if (isUser) "👤" else "🤖",
-                        fontSize = 13.sp
+                    Icon(
+                        imageVector = if (isUser) Icons.Default.Person else Icons.Default.Psychology,
+                        contentDescription = null,
+                        tint = if (isUser) Color.White else SuryaAmber,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }
@@ -326,10 +395,11 @@ fun ChatHistoryCard(message: ChatMessage, onNavigateToChat: () -> Unit) {
 
 @Composable
 fun EmptyStateView(
-    icon: String,
+    icon: ImageVector,
     title: String,
     description: String,
     buttonText: String,
+    buttonIcon: ImageVector,
     onAction: () -> Unit
 ) {
     Box(
@@ -342,7 +412,19 @@ fun EmptyStateView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(text = icon, fontSize = 54.sp)
+            Box(
+                modifier = Modifier
+                    .size(68.dp)
+                    .background(PaleMint, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = NeemGreenDark,
+                    modifier = Modifier.size(34.dp)
+                )
+            }
             Text(
                 text = title,
                 fontSize = 18.sp,
@@ -362,7 +444,18 @@ fun EmptyStateView(
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = NeemGreen)
             ) {
-                Text(text = buttonText, fontWeight = FontWeight.Bold, color = Color.White)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = buttonIcon,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(text = buttonText, fontWeight = FontWeight.Bold, color = Color.White)
+                }
             }
         }
     }

@@ -32,6 +32,10 @@ import com.ecosnap.bharat.data.AiWasteClassifier
 import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.CameraAlt as OutlinedCameraAlt
+import com.ecosnap.bharat.ui.common.WasteCategoryIcon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -61,13 +65,13 @@ fun ScanScreen(
             permissionDeniedMessage = null
 
             scope.launch {
-                scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "🔍 Scanning image contours..." else "🔍 वस्तु की आकृति स्कैन हो रही है..."
+                scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "Scanning image contours..." else "वस्तु की आकृति स्कैन हो रही है..."
                 delay(600)
-                scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "🧠 AI Analyzing material density & recyclability..." else "🧠 AI सामग्री व रीसाइक्लिंग श्रेणी जांच रहा है..."
+                scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "AI analyzing material density & recyclability..." else "AI सामग्री व रीसाइक्लिंग श्रेणी जांच रहा है..."
                 delay(700)
                 val analysis = AiWasteClassifier.analyzeImage(bitmap)
                 detectedResult = analysis
-                scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "✅ Identified: ${analysis.item.itemNameEnglish} (${analysis.confidenceScore}%)" else "✅ पहचान: ${analysis.item.itemNameHindi} (${analysis.confidenceScore}%)"
+                scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "Identified: ${analysis.item.itemNameEnglish} (${analysis.confidenceScore}%)" else "पहचान: ${analysis.item.itemNameHindi} (${analysis.confidenceScore}%)"
                 repository.registerDetectedItem(analysis.item, analysis.solutionBundle)
                 delay(900)
                 isScanning = false
@@ -89,11 +93,11 @@ fun ScanScreen(
                     capturedBitmap = bitmap
                     isScanning = true
                     scope.launch {
-                        scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "🔍 Analyzing photo from gallery..." else "🔍 गैलरी फोटो की जांच हो रही है..."
+                        scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "Analyzing photo from gallery..." else "गैलरी फोटो की जांच हो रही है..."
                         delay(700)
                         val analysis = AiWasteClassifier.analyzeImage(bitmap)
                         detectedResult = analysis
-                        scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "✅ Identified: ${analysis.item.itemNameEnglish}" else "✅ पहचान: ${analysis.item.itemNameHindi}"
+                        scanStatusText = if (currentLanguage == AppLanguage.ENGLISH) "Identified: ${analysis.item.itemNameEnglish}" else "पहचान: ${analysis.item.itemNameHindi}"
                         repository.registerDetectedItem(analysis.item, analysis.solutionBundle)
                         delay(800)
                         isScanning = false
@@ -158,31 +162,58 @@ fun ScanScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Text(text = "←", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
             }
             Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = if (currentLanguage == AppLanguage.ENGLISH) "📸 AI Waste Scanner" else "📸 AI कचरा स्कैनर",
-                color = Color.White,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CameraAlt,
+                    contentDescription = null,
+                    tint = NeemGreen,
+                    modifier = Modifier.size(18.dp)
+                )
+                Text(
+                    text = if (currentLanguage == AppLanguage.ENGLISH) "AI Waste Scanner" else "AI कचरा स्कैनर",
+                    color = Color.White,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
             Spacer(modifier = Modifier.width(8.dp))
             Surface(
                 shape = RoundedCornerShape(20.dp),
                 color = Color(0xFF222624),
                 modifier = Modifier.clickable { repository.toggleLanguage() }
             ) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "🌐 EN" else "🌐 हि",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                )
+                Row(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Translate,
+                        contentDescription = "Language",
+                        tint = Color.White,
+                        modifier = Modifier.size(13.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "EN" else "हि",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
             }
         }
 
@@ -193,12 +224,23 @@ fun ScanScreen(
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "⚠️ $permissionDeniedMessage",
-                    color = Color(0xFFFFCDD2),
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(10.dp)
-                )
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Warning",
+                        tint = Color(0xFFFFCDD2),
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = permissionDeniedMessage ?: "",
+                        color = Color(0xFFFFCDD2),
+                        fontSize = 12.sp
+                    )
+                }
             }
         }
 
@@ -225,7 +267,12 @@ fun ScanScreen(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.padding(24.dp)
                 ) {
-                    Text(text = "📸", fontSize = 64.sp)
+                    Icon(
+                        imageVector = Icons.Default.CameraAlt,
+                        contentDescription = null,
+                        tint = Color.White.copy(alpha = 0.4f),
+                        modifier = Modifier.size(56.dp)
+                    )
                     Text(
                         text = if (currentLanguage == AppLanguage.ENGLISH) "Point camera at any waste item" else "कचरे की ओर कैमरा करें",
                         color = Color.White,
@@ -308,7 +355,20 @@ fun ScanScreen(
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
             ) {
-                Text(text = if (currentLanguage == AppLanguage.ENGLISH) "🖼️ Gallery" else "🖼️ गैलरी", fontSize = 13.sp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PhotoLibrary,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Gallery" else "गैलरी",
+                        fontSize = 13.sp
+                    )
+                }
             }
 
             // Big Camera Shutter Button
@@ -326,7 +386,12 @@ fun ScanScreen(
                         .border(3.dp, Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "📸", fontSize = 28.sp)
+                    Icon(
+                        imageVector = Icons.Default.CameraAlt,
+                        contentDescription = "Capture",
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
                 }
             }
 
@@ -340,7 +405,20 @@ fun ScanScreen(
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
             ) {
-                Text(text = if (currentLanguage == AppLanguage.ENGLISH) "⚡ Test Demo" else "⚡ टेस्ट डेमो", fontSize = 13.sp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Test Demo" else "टेस्ट डेमो",
+                        fontSize = 13.sp
+                    )
+                }
             }
         }
 
@@ -371,8 +449,8 @@ fun ScanScreen(
                         modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = item.iconEmoji, fontSize = 22.sp)
-                        Spacer(modifier = Modifier.height(2.dp))
+                        WasteCategoryIcon(category = item.materialCategory, containerSize = 34.dp, iconSize = 18.dp)
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = if (currentLanguage == AppLanguage.ENGLISH) item.itemNameEnglish else item.itemNameHindi,
                             color = Color.White,

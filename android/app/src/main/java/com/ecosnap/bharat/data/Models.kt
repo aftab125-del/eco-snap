@@ -5,10 +5,10 @@ enum class AppMode {
     SOCIETY   // समाज मोड (Residential Society / Panchayat)
 }
 
-enum class AppLanguage(val code: String, val displayName: String, val flagEmoji: String) {
-    HINDI("hi", "हिन्दी", "🇮🇳"),
-    HINGLISH("hinglish", "Hinglish", "🔤"),
-    ENGLISH("en", "English", "🌐")
+enum class AppLanguage(val code: String, val displayName: String, val localeBadge: String = "") {
+    HINDI("hi", "हिन्दी", "HI"),
+    HINGLISH("hinglish", "Hinglish", "HING"),
+    ENGLISH("en", "English", "EN")
 }
 
 data class UserProfile(

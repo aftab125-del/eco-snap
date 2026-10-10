@@ -14,6 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.Leaderboard
+import androidx.compose.material.icons.filled.LocalShipping
 import com.ecosnap.bharat.data.AppLanguage
 import com.ecosnap.bharat.data.DataRepository
 import com.ecosnap.bharat.theme.*
@@ -51,18 +58,33 @@ fun SocietyScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Text(text = "←", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = DeepCharcoal)
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = DeepCharcoal
+                )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "👥 Society Hub" else "👥 समाज व पंचायत हब",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = DeepCharcoal,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Apartment,
+                        contentDescription = null,
+                        tint = DeepCharcoal,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Society Hub" else "समाज व पंचायत हब",
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = DeepCharcoal,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 Text(
                     text = societyStats.getName(currentLanguage),
                     fontSize = 11.sp,
@@ -85,12 +107,23 @@ fun SocietyScreen(
             colors = CardDefaults.cardColors(containerColor = PaleMint)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "🏆 Monthly Community Record" else "🏆 इस महीने का सामूहिक रिकॉर्ड",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    color = NeemGreenDark
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Leaderboard,
+                        contentDescription = null,
+                        tint = NeemGreenDark,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Monthly Community Record" else "इस महीने का सामूहिक रिकॉर्ड",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = NeemGreenDark
+                    )
+                }
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -119,12 +152,23 @@ fun SocietyScreen(
             colors = CardDefaults.cardColors(containerColor = SurfaceCard)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "🪱 Community Compost Pit Status:" else "🪱 कम्युनिटी कम्पोस्ट गड्ढा स्थिति:",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = DeepCharcoal
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Eco,
+                        contentDescription = null,
+                        tint = NeemGreenDark,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Community Compost Pit Status:" else "कम्युनिटी कम्पोस्ट गड्ढा स्थिति:",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = DeepCharcoal
+                    )
+                }
                 Spacer(modifier = Modifier.height(10.dp))
                 Surface(
                     shape = RoundedCornerShape(8.dp),
@@ -173,12 +217,23 @@ fun SocietyScreen(
             colors = CardDefaults.cardColors(containerColor = SurfaceCard)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = if (currentLanguage == AppLanguage.ENGLISH) "🚚 Community Bulk Scrap Pickup:" else "🚚 सामूहिक कबाड़ पिकअप (Bulk Pickup):",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = DeepCharcoal
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.LocalShipping,
+                        contentDescription = null,
+                        tint = NeemGreenDark,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = if (currentLanguage == AppLanguage.ENGLISH) "Community Bulk Scrap Pickup:" else "सामूहिक कबाड़ पिकअप (Bulk Pickup):",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = DeepCharcoal
+                    )
+                }
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = if (currentLanguage == AppLanguage.ENGLISH) {
@@ -202,11 +257,22 @@ fun SocietyScreen(
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = NeemGreen)
                 ) {
-                    Text(
-                        text = if (currentLanguage == AppLanguage.ENGLISH) "➕ Add my dry scrap (8 kg) to pickup" else "➕ मेरा सूखा कबाड़ (8 kg) पिकअप में जोड़ें",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = if (currentLanguage == AppLanguage.ENGLISH) "Add my dry scrap (8 kg) to pickup" else "मेरा सूखा कबाड़ (8 kg) पिकअप में जोड़ें",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
