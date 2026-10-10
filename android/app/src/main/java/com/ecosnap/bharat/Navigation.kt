@@ -1,5 +1,6 @@
 package com.ecosnap.bharat
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,7 +32,23 @@ sealed class Screen {
 @Composable
 fun MainNavigation() {
     val repository = remember { DataRepository() }
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    val backStack = remember { mutableStateListOf<Screen>(Screen.Home) }
+    val currentScreen = backStack.lastOrNull() ?: Screen.Home
+
+    fun navigateTo(screen: Screen) {
+        backStack.add(screen)
+    }
+
+    fun navigateBack() {
+        if (backStack.size > 1) {
+            backStack.removeAt(backStack.size - 1)
+        }
+    }
+
+    // Android Hardware/System Navigation Bar Back Button Handler
+    BackHandler(enabled = backStack.size > 1) {
+        navigateBack()
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -41,69 +58,72 @@ fun MainNavigation() {
             is Screen.Home -> {
                 HomeScreen(
                     repository = repository,
-                    onNavigateToScan = { currentScreen = Screen.Scan },
-                    onNavigateToScrapRates = { currentScreen = Screen.ScrapRates },
-                    onNavigateToSociety = { currentScreen = Screen.Society },
-                    onNavigateToAuth = { currentScreen = Screen.Auth },
-                    onNavigateToChat = { currentScreen = Screen.Chat },
-                    onNavigateToHistory = { currentScreen = Screen.History },
-                    onItemSelected = { itemId -> currentScreen = Screen.Diagnostic(itemId) }
+                    onNavigateToScan = { navigateTo(Screen.Scan) },
+                    onNavigateToScrapRates = { navigateTo(Screen.ScrapRates) },
+                    onNavigateToSociety = { navigateTo(Screen.Society) },
+                    onNavigateToAuth = { navigateTo(Screen.Auth) },
+                    onNavigateToChat = { navigateTo(Screen.Chat) },
+                    onNavigateToHistory = { navigateTo(Screen.History) },
+                    onItemSelected = { itemId -> navigateTo(Screen.Diagnostic(itemId)) }
                 )
             }
             is Screen.Scan -> {
                 ScanScreen(
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home },
-                    onPhotoCaptured = { itemId -> currentScreen = Screen.Diagnostic(itemId) }
+                    onBack = { navigateBack() },
+                    onPhotoCaptured = { itemId -> navigateTo(Screen.Diagnostic(itemId)) }
                 )
             }
             is Screen.Diagnostic -> {
                 DiagnosticScreen(
                     itemId = screen.itemId,
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home },
-                    onViewSolutions = { itemId -> currentScreen = Screen.Solutions(itemId) }
+                    onBack = { navigateBack() },
+                    onViewSolutions = { itemId -> navigateTo(Screen.Solutions(itemId)) }
                 )
             }
             is Screen.Solutions -> {
                 SolutionsScreen(
                     itemId = screen.itemId,
                     repository = repository,
-                    onBack = { currentScreen = Screen.Diagnostic(screen.itemId) },
-                    onImpactLogged = { currentScreen = Screen.Home }
+                    onBack = { navigateBack() },
+                    onImpactLogged = {
+                        backStack.clear()
+                        backStack.add(Screen.Home)
+                    }
                 )
             }
             is Screen.ScrapRates -> {
                 ScrapRatesScreen(
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home }
+                    onBack = { navigateBack() }
                 )
             }
             is Screen.Society -> {
                 SocietyScreen(
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home }
+                    onBack = { navigateBack() }
                 )
             }
             is Screen.Auth -> {
                 AuthScreen(
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home },
-                    onAuthSuccess = { currentScreen = Screen.Home }
+                    onBack = { navigateBack() },
+                    onAuthSuccess = { navigateBack() }
                 )
             }
             is Screen.Chat -> {
                 AIChatScreen(
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home }
+                    onBack = { navigateBack() }
                 )
             }
             is Screen.History -> {
                 HistoryScreen(
                     repository = repository,
-                    onBack = { currentScreen = Screen.Home },
-                    onNavigateToScan = { currentScreen = Screen.Scan },
-                    onNavigateToChat = { currentScreen = Screen.Chat }
+                    onBack = { navigateBack() },
+                    onNavigateToScan = { navigateTo(Screen.Scan) },
+                    onNavigateToChat = { navigateTo(Screen.Chat) }
                 )
             }
         }
